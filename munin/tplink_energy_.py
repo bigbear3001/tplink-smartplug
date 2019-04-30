@@ -92,9 +92,15 @@ try:
 	#	print "Sent:     ", cmd
 	#	print "Received: ", decrypt(data[4:])
 		energy = json.loads(decrypt(data[4:]))
-		print "current.value %f" % energy['emeter']['get_realtime']['current']
-		print "voltage.value %f" % energy['emeter']['get_realtime']['voltage']
-		print "power.value %f" % energy['emeter']['get_realtime']['power']
+		realtime_ = energy['emeter']['get_realtime']
+		if 'current' in realtime_:
+			print "current.value %f" % realtime_['current']
+			print "voltage.value %f" % realtime_['voltage']
+			print "power.value %f" % realtime_['power']
+		else:
+			print "current.value %f" % (realtime_['current_ma'] * 0.001)
+			print "voltage.value %f" % (realtime_['voltage_mv'] * 0.001)
+			print "power.value %f" % (realtime_['power_mw'] * 0.001)
 except socket.error:
 	quit("Cound not connect to host " + ip + ":" + str(port))
 
